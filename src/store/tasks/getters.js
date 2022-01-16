@@ -1,7 +1,7 @@
 export default {
-  toDoTasks: (store) => store.tasks.filter((task) => task.concluded === false),
-  countToDoTasks: (state, getters) => getters.toDoTasks.length,
-  concludedTasks: (store) => store.tasks.filter((task) => task.concluded),
-  countConcludedTasks: (state, getters) => getters.concludedTasks.length,
-  findTaskById: (state) => (id) => state.tasks.find((task) => task.id === id),
+  toDo: (store) => store.tasks.filter((task) => task.concluded === false),
+  countToDo: (state, getters) => getters.toDo.length,
+  concluded: (store) => store.tasks.filter((task) => task.concluded),
+  countConcluded: (state, getters) => getters.concluded.length,
+  findTaskId: (state) => (id) => state.tasks.find((task) => task.id === id),
 };

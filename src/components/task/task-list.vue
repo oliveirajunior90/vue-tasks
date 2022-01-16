@@ -5,34 +5,29 @@
         <h1 class="font-weight-light">Lista de tarefas</h1>
       </div>
       <div class="col-sm-2">
-        <button
-          class="btn btn-primary float-right"
-          @click="showTaskForm"
-        >
+        <button class="btn btn-primary float-right" @click="showTaskForm">
           <i class="fa fa-plus mr-2"></i>
           <span>create</span>
         </button>
       </div>
     </div>
 
-    <h3 class="font-weight-light mt-4">A fazer ({{ countToDoTasks }})</h3>
+    <h3 class="font-weight-light mt-4">A fazer ({{ countToDo }})</h3>
 
-    <ul class="list-group" v-if="countToDoTasks > 0">
+    <ul class="list-group" v-if="countToDo > 0">
       <TaskListItem
-        v-for="task in toDoTasks"
+        v-for="task in toDo"
         :key="task.id"
         :task="task"
         @edit="selectTaskToEdit"
       />
     </ul>
 
-    <h3 class="font-weight-light mt-4">
-      Concluidas ({{ countConcludedTasks }})
-    </h3>
+    <h3 class="font-weight-light mt-4">Concluidas ({{ countConcluded }})</h3>
 
-    <ul class="list-group" v-if="countConcludedTasks > 0">
+    <ul class="list-group" v-if="countConcluded > 0">
       <TaskListItem
-        v-for="task in concludedTasks"
+        v-for="task in concluded"
         :key="task.id"
         :task="task"
         @edit="selectTaskToEdit"
@@ -41,16 +36,12 @@
 
     <p v-else>Nenhuma tarefa criada.</p>
 
-    <TaskForm
-      v-if="showForm"
-      :task="selectedTask"
-      @save="saveTask"
-    />
+    <TaskForm v-if="showForm" :task="selectedTask" @save="saveTask" />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 import TaskForm from "./task-form.vue";
 import TaskListItem from "./task-list-item.vue";
 
@@ -59,6 +50,9 @@ export default {
     TaskForm,
     TaskListItem,
   },
+  mounted() {
+    this.$store.dispatch("tasks/fetchAll");
+  },
   data() {
     return {
       showForm: false,
@@ -66,13 +60,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(["tasks"]),
-    ...mapGetters([
-      "toDoTasks",
-      "concludedTasks",
-      "countConcludedTasks",
-      "countToDoTasks",
-      "findTaskById",
+    ...mapGetters("tasks", [
+      "toDo",
+      "concluded",
+      "countConcluded",
+      "countToDo",
+      "findById",
     ]),
   },
   methods: {
@@ -93,9 +86,9 @@ export default {
     },
     saveTask({ task, operation }) {
       operation === "create"
-        ? this.$store.commit("createTask", task)
-        : this.$store.commit("updateTask", task);
-      this.reset()
+        ? this.$store.dispatch("tasks/create", task)
+        : this.$store.dispatch("tasks/update", task);
+      this.reset();
     },
   },
 };

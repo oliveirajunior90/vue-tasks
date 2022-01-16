@@ -8,7 +8,6 @@ const store = {
   modules: {
     tasks,
   },
-  strict: true,
 };
 
 export default new Vuex.Store(store);

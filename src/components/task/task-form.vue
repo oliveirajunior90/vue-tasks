@@ -35,9 +35,7 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">
-        save
-      </button>
+      <button type="submit" class="btn btn-primary">save</button>
     </form>
   </div>
 </template>
@@ -60,13 +58,11 @@ export default {
       return this.task ? "col-sm-10" : "col-sm-12";
     },
     buttonClass() {
-      return this.task && this.task.concluded
-        ? "btn-success"
-        : "btn-secondary";
+      return this.task && this.task.concluded ? "btn-success" : "btn-secondary";
     },
     selectedTask: {
       set(data) {
-        this.localTask = {...this.localTask, [data.property]: data.value}
+        this.localTask = { ...this.localTask, [data.property]: data.value };
       },
       get() {
         return this.localTask;
@@ -77,7 +73,6 @@ export default {
     save() {
       const operation = !this.task ? "create" : "edit";
       this.$emit("save", { operation, task: this.selectedTask });
-
     },
   },
 };

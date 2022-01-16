@@ -1,4 +1,4 @@
-const createTask = ({ tasks }, payload) => {
+const create = ({ tasks }, payload) => {
   tasks.push({
     id: tasks.length + 1,
     title: payload.title,
@@ -6,12 +6,17 @@ const createTask = ({ tasks }, payload) => {
   });
 };
 
-const updateTask = ({ tasks }, payload) => {
+const update = ({ tasks }, payload) => {
   const index = tasks.findIndex((data) => data.id === payload.id);
   tasks.splice(index, 1, payload);
 };
 
+const tasks = (state, tasks) => {
+  state.tasks = tasks;
+};
+
 export default {
-  createTask,
-  updateTask,
+  create,
+  update,
+  tasks,
 };
